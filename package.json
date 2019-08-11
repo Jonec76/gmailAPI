@@ -1,0 +1,15 @@
+{
+  "name": "gmailread",
+  "version": "1.0.0",
+  "main": "gmailRead.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "googleapis": "^42.0.0"
+  }
+}
