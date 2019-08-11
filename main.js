@@ -10,9 +10,10 @@
 
 /******************* */
 
-const { list, get, listLabels } = require('./gAPI.js')
-const API = get;
-const SCOPES = [' https://mail.google.com'];
+const { list, get, listLabels, send } = require('./gAPI.js')
+const API = list;
+var config = require("./config");
+const SCOPES = config.send['scope'];
 
 /******************* */
 

@@ -1,5 +1,6 @@
 const { google } = require('googleapis');
 var config = require("./config");
+const mailcomposer = require('mailcomposer').MailComposer
 
 
 function list(auth) {
@@ -49,8 +50,35 @@ function listLabels(auth) {
         }
     });
 }
+
+function send(auth) {
+    const gmail = google.gmail({ version: 'v1', auth });
+    let mail = new mailcomposer({
+        to: config.send["to"],
+        text: config.send["content"],
+        subject: config.send["subject"],
+        textEncoding: "base64",
+    });
+    console.log(mail)
+    mail.compile().build((error, msg) => {
+        if (error) return console.log('Error compiling email ' + error);
+        const encodedMessage = Buffer.from(msg)
+            .toString('base64')
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+        gmail.users.messages.send({
+            auth: auth,
+            userId: 'me',
+            resource: {
+                'raw': encodedMessage
+            }
+        }).catch(error => console.log('error: ', error));
+    })
+}
 module.exports = {
     get: get,
     list: list,
-    listLabels: listLabels
+    listLabels: listLabels,
+    send: send
 }
